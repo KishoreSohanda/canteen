@@ -1,0 +1,29 @@
+.bgImg{
+    background-image: url('../Backgrounds/brooke-lark-wMzx2nBdeng-unsplash.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+button a{
+    text-decoration: none;
+    color: white;
+}
+.btn{
+    margin: 1rem 0.2rem;
+}
+.box{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; 
+}
+img{
+    border: 0.1rem solid black;
+    border-radius: 0.2rem;
+    height: 70%;
+    width: 100%;
+}
