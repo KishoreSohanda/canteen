@@ -43,10 +43,10 @@ app.post('/login',async(req,res)=>{
         const pass = req.body.password;
         const userEmail = await User.findOne({email:email});
         if (userEmail.password === pass){
-            res.redirect('home');
+            res.redirect('/home');
         }
         else{
-            res.redirect("login");
+            res.redirect("/login");
         }
     } catch (e) {
         res.send(e);
@@ -59,10 +59,10 @@ app.post('/signup',async (req,res)=>{
     try {
     const user = new User(req.body);
     await user.save();
-    res.redirect('login');
+    res.redirect('/login');
     } catch (error) {
         console.log(error);
-        res.redirect('signup');
+        res.redirect('/signup');
     }
 });
 app.get('/menu',async(req,res)=>{
@@ -73,7 +73,7 @@ app.get('/menu',async(req,res)=>{
         res.render('menu',{menuItems,admin,validationFailed});
     } catch (error) {
         console.log(error);
-        res.redirect('home');
+        res.redirect('/home');
     }
 });
 app.get('/menu/admin',async(req,res)=>{
@@ -94,21 +94,41 @@ app.get('/menu/admin',async(req,res)=>{
     }
     catch(error){
         console.log(error);
-        res.redirect('home');
+        res.redirect('/home');
     }
 });
 app.post('/menu',async (req,res)=>{
     try{
         const menu = new Menu(req.body);
         await menu.save();
-        res.redirect('menu');
+        res.redirect('/menu');
     }
     catch(error){
-        res.redirect('addItemToMenu');
-    }
+        res.redirect('/menu');
+    }   
 });
 app.get('/menu/new',(req,res)=>{
     res.render('addItemToMenu');
+});
+app.get('/menu/:id',async(req,res)=>{
+    const {id} = req.params;
+    const item = await Menu.findById(id);
+    res.render('showMenuItem',{item});
+});
+app.get('/menu/:id/edit',async(req,res)=>{
+    const {id} = req.params;
+    const item = await Menu.findById(id);
+    res.render('editMenuItem',{item});
+});
+app.patch('/menu/:id',async(req,res)=>{
+    const {id} = req.params;
+    await Menu.findByIdAndUpdate(id,{...req.body},{new:true});
+    res.redirect(`/menu/${id}`);
+});
+app.delete('/menu/:id',async(req,res)=>{
+    const {id} = req.params;
+    await Menu.findByIdAndDelete(id);
+    res.redirect(`/menu`);
 });
 app.get('/cart',(req,res)=>{
     res.render('cart');

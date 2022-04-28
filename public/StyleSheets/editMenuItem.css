@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Satisfy&display=swap');
+.text-center{
+    font-family: 'Libre Baskerville', serif;
+}
+form{
+    margin: 1rem auto;
+}
+section{
+    margin: 1rem auto;
+    /* border: 0.1rem solid black; */
+    width: 50%;
+    padding: 2rem 0rem;
+}
+#menuBtn a{
+    text-decoration: none;
+    color: white;
+}
+.text-center{
+    padding: 1.1rem 0rem;
+    box-shadow:  0.1rem 0.1rem 0.2rem 0.1rem;
+}
