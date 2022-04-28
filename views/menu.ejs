@@ -12,8 +12,15 @@
 <body>
     <%-include('./partials/navbar')%>     
    <section>
+       <% if(validationFailed){ %> 
+    <div class="alert alert-danger" role="alert">
+       Wrong Password !!!
+      </div>
+      <% } %> 
     <div>
+        <% if(admin){%> 
         <button id="btns" type="button" class="btn btn-success"> <a href="/menu/new">Add Item To The Menu </a></button>
+        <% } %> 
     </div>
     <% for (let item of menuItems){%>
     <div class="card" mb-3>

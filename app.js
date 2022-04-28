@@ -6,8 +6,10 @@ const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const User = require('./models/UserInfo');
 const Menu = require('./models/Menu');
+const flash = require('connect-flash');
 const mongoose=require('mongoose');
 const { findById, findOne } = require('./models/UserInfo');
+const { error } = require('console');
 
 main().catch(err => console.log(err));
 async function main() {
@@ -24,6 +26,7 @@ app.set('views',path.join(__dirname,'views'));
 app.use(express.urlencoded({extended:true}));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname,'public')));
+
 
 app.get('/',(req,res)=>{
     res.render('Canteen.ejs');
@@ -61,21 +64,48 @@ app.post('/signup',async (req,res)=>{
         console.log(error);
         res.redirect('signup');
     }
-    
 });
 app.get('/menu',async(req,res)=>{
-    const menuItems = await Menu.find({});
-    res.render('menu',{menuItems});
+    try {
+        const menuItems = await Menu.find({});
+        const admin = false;
+        const validationFailed = false;
+        res.render('menu',{menuItems,admin,validationFailed});
+    } catch (error) {
+        console.log(error);
+        res.redirect('home');
+    }
+});
+app.get('/menu/admin',async(req,res)=>{
+    try{
+        const menuItems = await Menu.find({});
+        let admin = true;
+        let validationFailed = true;
+        const adminPassword = "123456"
+        const password = req.query.password;
+        if(password === adminPassword){
+            validationFailed = false;
+            res.render('menu',{menuItems,admin,validationFailed});
+        }
+        else{
+            admin=false;
+            res.render('menu.ejs',{menuItems,admin,validationFailed});
+        }
+    }
+    catch(error){
+        console.log(error);
+        res.redirect('home');
+    }
 });
 app.post('/menu',async (req,res)=>{
     try{
-       const menu = new Menu(req.body);
-       await menu.save();
-       res.redirect('menu');
-   }
-   catch(error){
-       res.redirect('addItemToMenu');
-   }
+        const menu = new Menu(req.body);
+        await menu.save();
+        res.redirect('menu');
+    }
+    catch(error){
+        res.redirect('addItemToMenu');
+    }
 });
 app.get('/menu/new',(req,res)=>{
     res.render('addItemToMenu');
